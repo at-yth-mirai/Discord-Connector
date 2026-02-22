@@ -1,0 +1,13 @@
+name = "discord-connector-frontend"
+compatibility_date = "2024-03-20"
+
+[pages_build_output_dir]
+value = "public"
+
+[[r2_buckets]]
+binding = "UPLOAD_BUCKET"
+bucket_name = "discord-connector-uploads"
+
+[vars]
+CLOUD_RUN_URL = "" # To be filled later
+CLOUD_RUN_SECRET = "" # To be filled later
