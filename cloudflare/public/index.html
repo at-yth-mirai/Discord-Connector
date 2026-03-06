@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,22 +10,26 @@
         .drop-zone {
             transition: all 0.3s ease;
         }
+
         .drop-zone.dragover {
             background-color: #f3f4f6;
             border-color: #3b82f6;
         }
     </style>
 </head>
+
 <body class="bg-gray-50 min-h-screen flex items-center justify-center p-4">
     <div class="max-w-md w-full bg-white rounded-xl shadow-lg p-8">
         <h1 class="text-2xl font-bold text-center text-gray-800 mb-6">ファイルアップロード</h1>
-        
-        <div id="dropZone" class="drop-zone border-2 border-dashed border-gray-300 rounded-lg p-8 text-center cursor-pointer mb-6">
+
+        <div id="dropZone"
+            class="drop-zone border-2 border-dashed border-gray-300 rounded-lg p-8 text-center cursor-pointer mb-6">
             <svg class="mx-auto h-12 w-12 text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
             </svg>
             <p class="text-gray-600 mb-2">クリックまたはドラッグ＆ドロップでファイルを選択</p>
-            <p class="text-sm text-gray-400">最大1GBまで</p>
+            <p class="text-sm text-gray-400"></p>
             <input type="file" id="fileInput" class="hidden">
         </div>
 
@@ -33,7 +38,8 @@
             <p id="fileSize" class="text-sm text-blue-700 mt-1"></p>
         </div>
 
-        <button id="uploadBtn" disabled class="w-full bg-blue-600 text-white font-semibold py-3 px-4 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-blue-700 transition-colors">
+        <button id="uploadBtn" disabled
+            class="w-full bg-blue-600 text-white font-semibold py-3 px-4 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-blue-700 transition-colors">
             アップロード開始
         </button>
 
@@ -46,8 +52,14 @@
                 <div id="progressBar" class="bg-blue-600 h-2.5 rounded-full" style="width: 0%"></div>
             </div>
         </div>
+
+        <div id="driveLink" class="hidden mt-6 p-4 bg-green-50 rounded-lg">
+            <p class="text-sm text-green-700 mb-2">Google Drive のファイルを開く：</p>
+            <a id="driveLinkElement" href="#" target="_blank" class="text-blue-600 hover:text-blue-800 underline break-all"></a>
+        </div>
     </div>
 
     <script src="app.js"></script>
 </body>
+
 </html>

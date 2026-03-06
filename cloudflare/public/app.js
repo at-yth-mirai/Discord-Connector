@@ -190,6 +190,29 @@ uploadBtn.addEventListener('click', async () => {
         progressBar.classList.remove('bg-blue-600');
         progressBar.classList.add('bg-green-500');
 
+        // Display Google Drive link
+        const driveLink = document.getElementById('driveLink');
+        const driveLinkElement = document.getElementById('driveLinkElement');
+        if (fileMetadata && fileMetadata.id) {
+            const driveUrl = `https://drive.google.com/file/d/${fileMetadata.id}/view`;
+            driveLinkElement.href = driveUrl;
+            driveLinkElement.textContent = driveUrl;
+            driveLink.classList.remove('hidden');
+
+            // Auto-redirect after 3 seconds if user hasn't clicked
+            let redirectTimeout = setTimeout(() => {
+                window.location.href = driveUrl;
+            }, 3000);
+
+            // Cancel auto-redirect if user clicks the link or anywhere on the page
+            const cancelRedirect = () => {
+                clearTimeout(redirectTimeout);
+            };
+            driveLinkElement.addEventListener('click', cancelRedirect);
+            document.addEventListener('click', cancelRedirect);
+            document.addEventListener('touchend', cancelRedirect);
+        }
+
         // cleanup UI
         fileInfo.classList.add('hidden');
         uploadBtn.classList.add('hidden');
