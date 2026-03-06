@@ -46,7 +46,12 @@ export async function onRequestPost({ request, env }) {
             throw new Error(`Cloud Run returned ${response.status}: ${errorText}`);
         }
 
-        return new Response(JSON.stringify({ message: '転送タスクが開始されました' }), {
+        const responseData = await response.json();
+
+        return new Response(JSON.stringify({
+            message: responseData.message || '転送タスクが開始されました',
+            link: responseData.link || null
+        }), {
             status: 200,
             headers: { 'Content-Type': 'application/json' }
         });

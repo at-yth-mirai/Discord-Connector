@@ -44,21 +44,10 @@ app.post('/api/transfer', verifySecret, async (req, res) => {
         return res.status(400).json({ error: 'Missing required fields' });
     }
 
-    // Acknowledge the request immediately (202 Accepted) so Cloudflare Workers don't timeout
-    res.status(202).json({ message: 'Transfer task accepted and is processing in the background.' });
-
-    // Process in the background
     try {
         console.log(`Starting transfer for ${originalName} (${fileKey})`);
 
-        // 1. Get the readable stream from R2
-        const getCommand = new GetObjectCommand({
-            Bucket: process.env.R2_BUCKET_NAME || 'discord-connector-uploads',
-            Key: fileKey
-        });
-        const { Body: r2Stream } = await s3.send(getCommand);
-
-        // 2. Prepare Google Drive upload
+        // 1. Prepare Google Drive client
         const drive = getDriveClient();
         const driveFolderId = process.env.GOOGLE_DRIVE_FOLDER_ID;
 
@@ -67,22 +56,44 @@ app.post('/api/transfer', verifySecret, async (req, res) => {
             ...(driveFolderId ? { parents: [driveFolderId] } : {})
         };
 
+        // 2. Create an empty file in Google Drive FIRST to get the URL immediately
+        console.log('Creating empty file in Google Drive to grab link...');
+        const createResponse = await drive.files.create({
+            resource: fileMetadata,
+            fields: 'id, webViewLink'
+        });
+
+        const fileId = createResponse.data.id;
+        const webViewLink = createResponse.data.webViewLink;
+        console.log(`Created empty file successfully. File ID: ${fileId}. URL: ${webViewLink}`);
+
+        // 3. Acknowledge the request immediately to Cloudflare with the Drive link
+        res.status(200).json({
+            message: 'アップロードタスクを開始しました',
+            link: webViewLink
+        });
+
+        // 4. Process the actual data stream in the background
+        const getCommand = new GetObjectCommand({
+            Bucket: process.env.R2_BUCKET_NAME || 'discord-connector-uploads',
+            Key: fileKey
+        });
+        const { Body: r2Stream } = await s3.send(getCommand);
+
         const media = {
             mimeType: contentType || 'application/octet-stream',
             body: r2Stream // Pass the stream directly
         };
 
-        // 3. Upload to Google Drive
-        console.log('Uploading stream to Google Drive...');
-        const driveResponse = await drive.files.create({
-            resource: fileMetadata,
-            media: media,
-            fields: 'id, webViewLink'
+        console.log('Uploading stream to Google Drive background job...');
+        await drive.files.update({
+            fileId: fileId,
+            media: media
         });
 
-        console.log(`Successfully uploaded to Google Drive. File ID: ${driveResponse.data.id}`);
+        console.log(`Successfully uploaded data to Google Drive. File ID: ${fileId}`);
 
-        // 4. Clean up R2 completely
+        // 5. Clean up R2 completely
         console.log('Deleting temporary file from R2...');
         const deleteCommand = new DeleteObjectCommand({
             Bucket: process.env.R2_BUCKET_NAME || 'discord-connector-uploads',
@@ -93,6 +104,9 @@ app.post('/api/transfer', verifySecret, async (req, res) => {
 
     } catch (error) {
         console.error(`Error during transfer of ${fileKey}:`, error);
+        if (!res.headersSent) {
+            res.status(500).json({ error: 'Failed to start transfer process' });
+        }
         // Note: For a robust system, we would want to implement a retry mechanism 
         // or a Dead Letter Queue (DLQ) if the background job fails.
     }

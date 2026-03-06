@@ -16,5 +16,6 @@
     "express": "^5.2.1",
     "googleapis": "^171.4.0",
     "multer": "^2.0.2"
-  }
+  },
+  "type": "module"
 }

@@ -1,0 +1,25 @@
+{
+  "name": "discord-connector-bot",
+  "version": "1.0.0",
+  "description": "Discord bot for generating R2 upload URLs",
+  "main": "bot.js",
+  "scripts": {
+    "start": "node bot.js",
+    "register": "node register-commands.js",
+    "test": "jest"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "discord.js": "^13.12.0",
+    "node-fetch": "^2.6.7",
+    "dotenv": "^16.1.4",
+    "@discordjs/rest": "^1.5.0",
+    "discord-api-types": "^0.37.50"
+  },
+  "devDependencies": {
+    "jest": "^29.0.0"
+  },
+  "type": "commonjs"
+}

@@ -1,0 +1,10 @@
+{
+  "keys": [
+    {
+      "kty": "RSA",
+      "n": "ryOkzur58G3uPujwxEhNu92jSdtlnYdOYYtuTq8iRSGiP8ccEWDoK1FZNDKwi5kii7mJg-CQeTLXhHBowqaRPD4dvv7fcJtriegp0p8ZrGj9rt9R9jy2cfb2FRbE-oCtbSbZ4dBeYajAm-9QXhR0A-RvbJN-_B1Pn1d2Z01BUi-KXJH3eMSKBA-e1OF15oL5_lNRYYbW1pw8xdgNhDqsLjAdx7vvPDCemgFhR1Va886MjH7f9VjcBCi1HnVq9pbfLUbAWFKINyQGy-LbKuhU0Y0xcRegEl7vQwv-gkBG3WmvaTn7kDIz8BJpZgjIcTZS6Ntdo4Zjv4-OCrgVB95Zlw",
+      "e": "AQAB",
+      "kid": "wif-key-1"
+    }
+  ]
+}

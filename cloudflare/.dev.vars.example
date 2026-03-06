@@ -1,0 +1,8 @@
+# For local development, set these variables to test init-resumable.js locally
+# Copy to .dev.vars and update with your values
+
+WIF_PROVIDER_AUDIENCE=//iam.googleapis.com/projects/671908432307/locations/global/workloadIdentityPools/cloudflare-pool/providers/cloudflare-provider
+WIF_ISS=https://discord-connector
+WIF_SUBJECT=discord-connector
+GOOGLE_SERVICE_ACCOUNT_EMAIL=discord-drive-uploader@discord-connector-488207.iam.gserviceaccount.com
+DRIVE_PARENT_FOLDER_ID=

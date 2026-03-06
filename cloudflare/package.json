@@ -11,10 +11,11 @@
   "license": "ISC",
   "packageManager": "pnpm@10.28.1",
   "devDependencies": {
-    "wrangler": "^4.67.0"
+    "wrangler": "^4.70.0"
   },
   "dependencies": {
-    "aws4fetch": "^1.0.20",
+    "@aws-sdk/client-s3": "^3.996.0",
+    "@aws-sdk/s3-request-presigner": "^3.996.0",
     "hono": "^4.12.1"
   }
 }

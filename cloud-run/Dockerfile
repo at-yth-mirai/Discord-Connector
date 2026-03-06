@@ -1,18 +1,14 @@
 # Use the official Node.js image
-# https://hub.docker.com/_/node
 FROM node:20-alpine
 
 # Create and change to the app directory.
 WORKDIR /usr/src/app
 
-# Install pnpm
-RUN npm install -g pnpm
+# Copy package.json (lockファイルは無視してOKです)
+COPY package.json ./
 
-# Copy application dependency manifests to the container image.
-COPY package.json pnpm-lock.yaml* ./
-
-# Install production dependencies.
-RUN pnpm install --prod
+# npmを使って確実・フラットにインストールする
+RUN npm install
 
 # Copy local code to the container image.
 COPY . ./
